@@ -2,9 +2,15 @@
  * Project 4 - OOP Game App
  * Phrase.js */
 
-class Game {
+class Phrase {
     constructor(phrase) {
-        this.phrase = phrase;
+        this.phrase = phrase.toLowerCase();
         
     }
+
+
+ 
+  
 }
+
+
