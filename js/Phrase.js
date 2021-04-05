@@ -27,11 +27,11 @@ class Phrase {
             list.appendChild(listElement);
             listElement.innerHTML = selectedLetter;
 
-            if (selectedLetter !== ''){
+            if (selectedLetter !== ' '){
                 listElement.className = `hide letter ${selectedLetter}`;
 
             }else {
-                list.classList.add('');
+                listElement.className = 'space';
             }
         });
        /*  for (let i = 0; i < phrase.length; i++){

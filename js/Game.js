@@ -97,8 +97,9 @@
             let message = document.querySelector('#game-over-message');
             let resetButton = document.querySelector('#btn__reset');
             let overlay = document.querySelector('#overlay');
-            overlay.style.display='';
-            if (this.missed <5 ){
+            overlay.style.display='inherit';
+
+            if (gameWon){
                 message.innerText= "You Win!";
                 resetButton.innerText= "Play Again";
                 overlay.className='win';//change the background color
@@ -115,32 +116,53 @@
     * Handles onscreen keyboard button clicks
     * @param (HTMLButtonElement) button - The clicked button element
     */
-   handleInteraction(button){
-    button.disabled = true;
-    const clickedLetter = button.textContent;
-    const match = this.activePhrase.checkLetter(clickedLetter);
-    //check captured letter against active phrase for matches
-    if(!match){
-        button.classList.add('wrong');
-        this.removeLife();
-    } 
-  }
+    handleInteraction(button){
+        button.disabled = true;
+        const clickedLetter = button.textContent;
+        const match = this.activePhrase.checkLetter(clickedLetter);
+        //check captured letter against active phrase for matches
+        if(!match){
+            button.classList.add('wrong');
+            this.removeLife();
+        } else{
+        if(match) {
+            button.classList.add('chosen');
+            this.activePhrase.showMatchedLetter(clickedLetter);
+            const win = this.checkForWin();
+            if(win){
+                this.gameOver(win);
+            }
+        }
+    }
+ }
+
 
 
     resetGame(){
-        //reset the missed guess of user back to 0
-        this.missed = 0;
-        // reset all buttons that are disabled
-        let disabledButton = document.querySelectorAll('#qwerty button[disabled]');
-        for (let i = 0; i < disabledButton.length; i++){
-            disabledButton[i].disabled = false;
-            disabledButton[i].className = 'key';
-        }
-        // next, reset all lives
-        document.querySelectorAll('#scoreboard img').forEach(item => {item.src = "images/liveHeart.png"});
+         //remove all li elements from the phrase ul element 
+         const ul = document.querySelector('#phrase ul');
+         ul.innerHTML = '';
+         //enable all onscreen keyboard buttons to use the key CSS class
+         const keys = document.querySelectorAll('.key');
+         keys.forEach(button => button.className = 'key');
+         keys.forEach(button => button.disabled = false);
+         /**
+          * Reset all of the heart images (i.e. the player's lives) in the scoreboard at the bottom of
+            the gameboard to display the `liveHeart.png` image.
+          */
+
+         const hearts = document.querySelectorAll('img');
+         hearts.forEach(heart => heart.src = 'images/liveHeart.png');
+         const liHolder = [];
+         hearts.forEach(heart => liHolder.push(heart.parentElement));
+         liHolder.forEach(li => li.className = 'tries');
+
+         //reset all lives
+         this.missed = 0;
     }
 
 }
 
+    
     
 
